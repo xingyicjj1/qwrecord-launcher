@@ -19,7 +19,7 @@ public class MainActivity extends BridgeActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         // 从千问返回时不再重复拉起，仅首次进入时触发
     }
