@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>录音纪要</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:#f5f6f8;color:#1a1a1a;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    height:100vh;padding:24px;text-align:center;
+  }
+  .btn{
+    width:180px;height:180px;border-radius:50%;border:none;
+    background:linear-gradient(145deg,#ff6b4a,#e8382b);
+    color:#fff;font-size:22px;font-weight:600;
+    box-shadow:0 8px 24px rgba(232,56,43,.35);
+    cursor:pointer;transition:transform .15s;
+  }
+  .btn:active{transform:scale(.94)}
+  .tip{margin-top:28px;font-size:15px;color:#666;line-height:1.6}
+  .sub{margin-top:10px;font-size:13px;color:#999}
+</style>
+</head>
+<body>
+
+<button class="btn" id="go">录音纪要</button>
+<div class="tip">点击打开千问录音纪要</div>
+<div class="sub" id="status"></div>
+
+<script>
+var DEEPLINK = 'tongyi://page/startRecording';
+var PKG = 'com.aliyun.tongyi';
+
+function openViaIntentUri() {
+  // Android 标准 intent:// URI，WebView/Chrome 会转成 Intent 启动
+  var uri = 'intent://page/startRecording#Intent;scheme=tongyi;package=' + PKG + ';end';
+  window.location.href = uri;
+}
+
+function openViaBridge() {
+  // 原生桥接（MainActivity 注入）
+  if (window.QWBridge && window.QWBridge.open) {
+    window.QWBridge.open(DEEPLINK, PKG);
+    return true;
+  }
+  return false;
+}
+
+document.getElementById('go').addEventListener('click', function () {
+  if (!openViaBridge()) openViaIntentUri();
+});
+
+// 打开即自动触发一次（真正的一键直达）
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    if (!openViaBridge()) openViaIntentUri();
+  }, 300);
+});
+</script>
+
+</body>
+</html>

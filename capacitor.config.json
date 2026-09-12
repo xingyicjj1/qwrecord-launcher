@@ -1,0 +1,12 @@
+{
+  "appId": "com.qwrecord.launcher",
+  "appName": "录音纪要",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#ffffff"
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}
