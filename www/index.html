@@ -22,6 +22,7 @@
   .btn:active{transform:scale(.94)}
   .tip{margin-top:28px;font-size:15px;color:#666;line-height:1.6}
   .sub{margin-top:10px;font-size:13px;color:#999}
+  .alt{margin-top:24px;font-size:14px;color:#2b6cb0;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -29,19 +30,18 @@
 <button class="btn" id="go">录音纪要</button>
 <div class="tip">点击打开千问录音纪要</div>
 <div class="sub" id="status"></div>
+<a class="alt" id="alt">打不开？点这里（H5 方式）</a>
 
 <script>
 var DEEPLINK = 'tongyi://page/startRecording';
 var PKG = 'com.aliyun.tongyi';
 
 function openViaIntentUri() {
-  // Android 标准 intent:// URI，WebView/Chrome 会转成 Intent 启动
   var uri = 'intent://page/startRecording#Intent;scheme=tongyi;package=' + PKG + ';end';
   window.location.href = uri;
 }
 
 function openViaBridge() {
-  // 原生桥接（MainActivity 注入）
   if (window.QWBridge && window.QWBridge.open) {
     window.QWBridge.open(DEEPLINK, PKG);
     return true;
@@ -53,7 +53,15 @@ document.getElementById('go').addEventListener('click', function () {
   if (!openViaBridge()) openViaIntentUri();
 });
 
-// 打开即自动触发一次（真正的一键直达）
+document.getElementById('alt').addEventListener('click', function (e) {
+  e.preventDefault();
+  if (window.QWBridge && window.QWBridge.openUrl) {
+    window.QWBridge.openUrl('https://p.quark.cn/qianwen-record-note/record-result');
+  } else {
+    window.location.href = 'https://p.quark.cn/qianwen-record-note/record-result';
+  }
+});
+
 window.addEventListener('load', function () {
   setTimeout(function () {
     if (!openViaBridge()) openViaIntentUri();
